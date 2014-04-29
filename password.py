@@ -2,6 +2,7 @@
 import os
 import hashlib
 import md5
+import time
 allPossibleChars = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '@')
 def convert(i, key) :
@@ -14,9 +15,8 @@ def convert(i, key) :
 			i /= 63;
 	m = hashlib.md5()													# Gets the md5 hash
 	m.update(testpass)
-	print testpass
 	if(m.hexdigest() == key):											# Checks the md5 hash with the key from the text file
-		print "This is the password: " + testpass + "\nAnd this was the md5 hash cross-referenced: " + m.hexdigest()
+		print "This is the password found: " + testpass + "\nAnd this was the md5 hash cross-referenced: " + m.hexdigest()
 		return True
 	return False
 	
@@ -24,16 +24,23 @@ def convert(i, key) :
 def bruteForce(key):
 	limit = 8
 	i = 0
+	x = 0
 	while True:
-		if(convert(i,key) == True):
-			print "Password Found: Success"
-			break
-		i+=1
-		if (i == 63 ** limit):
-			print "Password Found: Failure"
-			break
-			
-			
+		start = time.clock()
+		while x < len(key):
+			if(convert(i,key[x]) == True):
+				print "Password Found: Success"
+				break
+			i+=1
+			if (i == 63 ** limit):
+				print "Password Found: Failure"
+				break
+		elapsed = (time.clock() - start)
+		print "{} : {} {} {} ".format("Elapsed time", elapsed, " seconds", "\n")
+		x+=1
+		i = 0
+
+#main()
 passwordfile = open("cracks.txt", "r")
 passwords = []
 for line in passwordfile.readlines():
@@ -41,7 +48,7 @@ for line in passwordfile.readlines():
 	passwords.append(line)
     
 passwordfile.close()
-bruteForce(passwords[2])					#Change the number indexed to pick which password to search for (e.g. 2 will try to find "God"'s md5 hash)
+bruteForce(passwords)					#passes in md5 hashed passwords
 
 
 
