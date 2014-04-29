@@ -1,10 +1,15 @@
-#For testing purposes only passwords that have one letter/number will be cracked
+#Siddharth Manoj
+
 import os
 import hashlib
 import md5
 import time
+
+#The bank of all characters. Add to this bank if more characters are necessary and increase the number '63' found in the code accordingly
 allPossibleChars = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '@')
+	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '@')		
+
+# uses MD5 hashing to check every possible permutation of words and compares it to the text file
 def convert(i, key) :
 	testpass = ""
 	if(i == 0):
@@ -20,7 +25,7 @@ def convert(i, key) :
 		return True
 	return False
 	
-	
+#helper function that calls the convert function
 def bruteForce(key):
 	limit = 8
 	i = 0
@@ -36,11 +41,12 @@ def bruteForce(key):
 				print "Password Found: Failure"
 				break
 		elapsed = (time.clock() - start)
-		print "{} : {} {} {} ".format("Elapsed time", elapsed, " seconds", "\n")
+		print "{} : {} {} {} ".format("Elapsed time", elapsed, " seconds", "\n")			#prints the time taken to crack each password!
 		x+=1
 		i = 0
 
-#main()
+#main() This functions calls both functions 
+#opens text file
 passwordfile = open("cracks.txt", "r")
 passwords = []
 for line in passwordfile.readlines():
@@ -49,6 +55,7 @@ for line in passwordfile.readlines():
     
 passwordfile.close()
 bruteForce(passwords)					#passes in md5 hashed passwords
+
 
 
 
